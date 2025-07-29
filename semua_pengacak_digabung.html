@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Semua Alat Pengacak & Prediksi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .highlight {
+      background-color: #fef08a;
+      padding: 0 2px;
+      border-radius: 4px;
+    }
+    .dominant {
+      font-weight: bold;
+      color: #3b82f6;
+    }
+    .number {
+      display: inline-block;
+      margin-right: 8px;
+      padding: 2px 6px;
+      background: #e0f2fe;
+      border-radius: 4px;
+    }
+    .histori-item {
+      margin-bottom: 4px;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .tab-button.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+    .result-box {
+      background-color: #f8fafc;
+      border-left: 4px solid #3b82f6;
+    }
+    .copy-btn {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      color: #3b82f6;
+    }
+    .copy-btn.copied {
+      color: #10b981;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <header class="bg-blue-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-6">
+      <h1 class="text-2xl md:text-3xl font-bold text-center">
+        <i class="fas fa-random mr-2"></i>Semua Alat Pengacak & Prediksi
+      </h1>
+      <p class="text-center text-blue-100 mt-2">Generator angka acak dan prediksi berdasarkan berbagai metode</p>
+    </div>
+  </header>
+
+  <nav class="sticky top-0 bg-white shadow-md z-10">
+    <div class="container mx-auto px-4 py-3 overflow-x-auto">
+      <div class="flex space-x-2 whitespace-nowrap">
+        <a href="#acak_nilai_tetap" class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-hashtag mr-1"></i>Acak Nilai Tetap
+        </a>
+        <a href="#acak" class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-calendar-day mr-1"></i>Acak dengan Tanggal
+        </a>
+        <a href="#Generator_Bilangan_Bulat_Acak" class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-sort-numeric-up mr-1"></i>Bilangan Bulat
+        </a>
+        <a href="#Pengacak_Nomor_4D" class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-dice-four mr-1"></i>Pengacak 4D
+        </a>
+        <a href="#Prediksi_Nomor_Berdasarkan_Hari" class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition">
+          <i class="fas fa-chart-line mr-1"></i>Prediksi Hari
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mx-auto px-4 py-8">
+    <!-- Acak Nilai Tetap -->
+    <section id="acak_nilai_tetap" class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <i class="fas fa-hashtag text-blue-600 text-xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Acak Angka 4D / 3D / 2D</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <label for="seed" class="block text-sm font-medium text-gray-700 mb-1">Masukkan seed (contoh: 20250413)</label>
+            <input type="text" id="seed" placeholder="20250413" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          
+          <button onclick="acak()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center">
+            <i class="fas fa-random mr-2"></i> Acak Sekarang
+          </button>
+          
+          <div class="result-box p-4 rounded-lg mt-4">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-medium text-gray-700">Hasil Acakan</h3>
+              <button onclick="copyResults('acak_nilai_tetap')" class="copy-btn text-gray-500 hover:text-blue-600">
+                <i class="far fa-copy mr-1"></i>Salin
+              </button>
+            </div>
+            <p class="mb-2">Hasil 4D: <strong id="hasil4d" class="text-blue-600">-</strong></p>
+            <p class="mb-2">Hasil 3D: <strong id="hasil3d" class="text-blue-600">-</strong></p>
+            <p>Hasil 2D: <strong id="hasil2d" class="text-blue-600">-</strong></p>
+          </div>
+        </div>
+        
+        <div>
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-medium text-gray-700">Riwayat Acakan</h3>
+              <button onclick="clearHistory('historyList')" class="text-sm text-red-500 hover:text-red-700">
+                <i class="fas fa-trash-alt mr-1"></i>Hapus
+              </button>
+            </div>
+            <div id="historyList" class="text-sm max-h-60 overflow-y-auto space-y-2">
+              <div class="text-gray-400 italic">Belum ada histori.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pengacak Nomor dengan Tanggal -->
+    <section id="acak" class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <i class="fas fa-calendar-day text-blue-600 text-xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Pengacak Nomor dengan Input Tanggal</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <label for="inputDate" class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+            <input type="date" id="inputDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          
+          <div>
+            <label for="seed" class="block text-sm font-medium text-gray-700 mb-1">Seed 4 angka</label>
+            <input type="number" id="seed1" placeholder="1234" min="0" max="9999" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          
+          <button onclick="generateNumbers()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center">
+            <i class="fas fa-play mr-2"></i> Generate
+          </button>
+        </div>
+        
+        <div>
+          <div id="result" class="result-box p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-medium text-gray-700">Hasil Acakan</h3>
+              <button onclick="copyResults('acak')" class="copy-btn text-gray-500 hover:text-blue-600">
+                <i class="far fa-copy mr-1"></i>Salin
+              </button>
+            </div>
+            <div class="text-sm">Hasil akan muncul di sini setelah Anda mengklik tombol Generate.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generator Bilangan Bulat Acak -->
+    <section id="Generator_Bilangan_Bulat_Acak" class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <i class="fas fa-sort-numeric-up text-blue-600 text-xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Generator Bilangan Bulat Acak</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <label for="jumlahInput" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Angka yang Diacak</label>
+            <input type="number" id="jumlahInput" min="1" placeholder="Misal: 20" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          
+          <div>
+            <label for="rentangSelect" class="block text-sm font-medium text-gray-700 mb-1">Pilih Rentang</label>
+            <select id="rentangSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+              <option value="10-99">10 sampai 99</option>
+              <option value="100-999">100 sampai 999</option>
+              <option value="1000-9999">1000 sampai 9999</option>
+            </select>
+          </div>
+          
+          <button id="generateButton" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center">
+            <i class="fas fa-random mr-2"></i> Acak Angka
+          </button>
+        </div>
+        
+        <div>
+          <div id="hasil" class="result-box p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-medium text-gray-700">Hasil Acakan</h3>
+              <button onclick="copyResults('Generator_Bilangan_Bulat_Acak')" class="copy-btn text-gray-500 hover:text-blue-600">
+                <i class="far fa-copy mr-1"></i>Salin
+              </button>
+            </div>
+            <div class="text-sm">Hasil akan muncul di sini setelah Anda mengklik tombol Acak Angka.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pengacak Nomor 4D -->
+    <section id="Pengacak_Nomor_4D" class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <i class="fas fa-dice-four text-blue-600 text-xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Pengacak Nomor 4D</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <label for="seed" class="block text-sm font-medium text-gray-700 mb-1">Masukkan Seed</label>
+            <input type="number" id="seed2" placeholder="Contoh: 1234" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          </div>
+          
+          <button id="acakButton" onclick="acakNomor()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition flex items-center justify-center">
+            <i class="fas fa-dice mr-2"></i> Acak 4 Digit
+          </button>
+          
+          <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <i class="fas fa-info-circle text-yellow-400"></i>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                  Cukup klik tombol sekali saja. Sistem akan menghasilkan 53 angka 4D dan menganalisis angka dominan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div id="result3" class="result-box p-4 rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-medium text-gray-700">Hasil Acakan</h3>
+              <button onclick="copyResults('Pengacak_Nomor_4D')" class="copy-btn text-gray-500 hover:text-blue-600">
+                <i class="far fa-copy mr-1"></i>Salin
+              </button>
+            </div>
+            <div class="text-sm">Hasil akan muncul di sini setelah Anda mengklik tombol Acak 4 Digit.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prediksi Nomor Berdasarkan Hari -->
+    <section id="Prediksi_Nomor_Berdasarkan_Hari" class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="flex items-center mb-6">
+        <div class="bg-blue-100 p-3 rounded-full mr-4">
+          <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800">Analisa dan Prediksi Nomor</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="tanggal" class="block text-sm font-medium text-gray-700 mb-1">Tanggal</label>
+              <input type="date" id="tanggal" placeholder="Tanggal" onchange="updateHari()" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+              <label for="hari" class="block text-sm font-medium text-gray-700 mb-1">Hari</label>
+              <select id="hari" disabled class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+                <option value="Sabtu">Sabtu</option>
+                <option value="Minggu">Minggu</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="periode" class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
+              <input type="number" id="periode" placeholder="Periode" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            
+            <div>
+              <label for="angka" class="block text-sm font-medium text-gray-700 mb-1">Angka Keluaran (4 digit)</label>
+              <input type="text" id="angka" placeholder="Angka Keluaran" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+          </div>
+          
+          <div class="flex space-x-3">
+            <button onclick="tambahHistori()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition">
+              <i class="fas fa-plus-circle mr-2"></i> Tambah ke Histori
+            </button>
+            <button onclick="hapusHistori()" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition">
+              <i class="fas fa-trash-alt mr-2"></i> Hapus Histori
+            </button>
+          </div>
+          
+          <div>
+            <label for="bulkInput" class="block text-sm font-medium text-gray-700 mb-1">Input Copy-Paste Data (Format: tanggal, hari, periode, angka)</label>
+            <textarea id="bulkInput" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Format: tanggal, hari, periode, angka (pisahkan dengan baris baru)"></textarea>
+            <button onclick="tambahHistoriMassal()" class="mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition">
+              <i class="fas fa-paste mr-2"></i> Tambah Massal
+            </button>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 h-full">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="font-medium text-gray-700">Daftar Histori</h3>
+              <span id="historiCount" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">0 item</span>
+            </div>
+            <div id="daftarHistori" class="text-sm max-h-96 overflow-y-auto space-y-2">
+              <div class="text-gray-400 italic">Belum ada histori.</div>
+            </div>
+          </div>
+          
+          <button onclick="analisaHariBerikutnya()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition">
+            <i class="fas fa-chart-bar mr-2"></i> Analisa Hari Berikutnya
+          </button>
+        </div>
+      </div>
+      
+      <div id="hasil44" class="result-box p-4 rounded-lg mt-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-medium text-gray-700">Hasil Analisa</h3>
+          <button onclick="copyResults('Prediksi_Nomor_Berdasarkan_Hari')" class="copy-btn text-gray-500 hover:text-blue-600">
+            <i class="far fa-copy mr-1"></i>Salin
+          </button>
+        </div>
+        <div class="text-sm">Hasil analisa akan muncul di sini setelah Anda mengklik tombol Analisa Hari Berikutnya.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white py-8">
+    <div class="container mx-auto px-4">
+      <div class="text-center">
+        <p class="mb-2">© 2023 Semua Alat Pengacak & Prediksi</p>
+        <p class="text-gray-400 text-sm">Alat ini dibuat untuk tujuan hiburan dan tidak menjamin keakuratan prediksi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Fungsi untuk menyalin hasil
+    function copyResults(sectionId) {
+      let textToCopy = '';
+      const section = document.getElementById(sectionId);
+      
+      if (sectionId === 'acak_nilai_tetap') {
+        textToCopy = `4D: ${document.getElementById('hasil4d').innerText}\n3D: ${document.getElementById('hasil3d').innerText}\n2D: ${document.getElementById('hasil2d').innerText}`;
+      } else if (sectionId === 'acak' || sectionId === 'Generator_Bilangan_Bulat_Acak' || sectionId === 'Pengacak_Nomor_4D' || sectionId === 'Prediksi_Nomor_Berdasarkan_Hari') {
+        textToCopy = document.getElementById('result').innerText;
+      }
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const copyBtn = section.querySelector('.copy-btn');
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<i class="fas fa-check mr-1"></i>Tersalin!';
+        
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<i class="far fa-copy mr-1"></i>Salin';
+        }, 2000);
+      });
+    }
+    
+    // Fungsi untuk menghapus histori
+    function clearHistory(elementId) {
+      if (confirm('Apakah Anda yakin ingin menghapus histori?')) {
+        document.getElementById(elementId).innerHTML = '<div class="text-gray-400 italic">Belum ada histori.</div>';
+      }
+    }
+    
+    // Fungsi untuk Acak Nilai Tetap
+    function hashStringToInt(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+
+    function mulberry32(a) {
+      return function () {
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    function acak() {
+      const seedInput = document.getElementById("seed").value.trim();
+      if (!seedInput) {
+        alert("Masukkan seed terlebih dahulu.");
+        return;
+      }
+
+      const seed4d = hashStringToInt(seedInput + "4d");
+      const rand4d = mulberry32(seed4d);
+      const angka4D = String(Math.floor(rand4d() * 10000)).padStart(4, '0');
+
+      const seed3d = hashStringToInt(seedInput + "3d");
+      const rand3d = mulberry32(seed3d);
+      const angka3D = String(Math.floor(rand3d() * 1000)).padStart(3, '0');
+
+      const seed2d = hashStringToInt(seedInput + "2d");
+      const rand2d = mulberry32(seed2d);
+      const angka2D = String(Math.floor(rand2d() * 100)).padStart(2, '0');
+
+      document.getElementById("hasil4d").innerText = angka4D;
+      document.getElementById("hasil3d").innerText = angka3D;
+      document.getElementById("hasil2d").innerText = angka2D;
+
+      // Tambah ke histori
+      const timestamp = new Date().toLocaleString("id-ID");
+      const entry = `<div class="bg-gray-100 p-2 rounded">[${timestamp}] Seed: <strong>${seedInput}</strong> | 4D: ${angka4D} | 3D: ${angka3D} | 2D: ${angka2D}</div>`;
+      const historyList = document.getElementById("historyList");
+
+      if (historyList.innerText === "Belum ada histori.") {
+        historyList.innerHTML = entry;
+      } else {
+        historyList.innerHTML = entry + historyList.innerHTML;
+      }
+    }
+
+    // Fungsi untuk Pengacak Nomor dengan Tanggal
+    function generateNumbers() {
+      // Ambil input
+      const inputDate = document.getElementById('inputDate').value;
+      const seedInput = document.getElementById('seed1').value;
+
+      // Validasi input
+      if (!inputDate || !/^\d{4}$/.test(seedInput)) {
+        alert("Harap isi tanggal dan seed 4 angka!");
+        return;
+      }
+
+      // Format tanggal ke YYYYMMDD
+      const dateParts = inputDate.split('-');
+      const formattedDate = dateParts.join('');
+
+      // Gabungkan tanggal dan seed
+      const combinedSeed = parseInt(formattedDate) + parseInt(seedInput);
+
+      // Algoritma pengacakan dengan seed
+      function* seededRandom(seed) {
+        let value = seed;
+        while(true) {
+          value = (value * 9301 + 49297) % 233280;
+          yield value / 233280;
+        }
+      }
+
+      // Hasilkan 20 angka acak
+      const generator = seededRandom(combinedSeed);
+      const results = [];
+      for(let i = 0; i < 20; i++) {
+        const rand = generator.next().value;
+        results.push(Math.floor(rand * 10000).toString().padStart(4, '0'));
+      }
+
+      // Hitung dominasi angka satuan (unit digit)
+      const unitFrequency = {};
+      results.forEach(num => {
+        const unitDigit = num[num.length - 1]; // Ambil digit satuan (terakhir)
+        unitFrequency[unitDigit] = (unitFrequency[unitDigit] || 0) + 1;
+      });
+
+      // Urutkan angka satuan berdasarkan frekuensi terbesar ke terkecil
+      const sortedUnits = Object.keys(unitFrequency)
+        .sort((a, b) => unitFrequency[b] - unitFrequency[a]);
+
+      // Tampilkan hasil
+      const resultHTML = results.map(num => 
+        sortedUnits.includes(num[num.length - 1]) ? `<span class="highlight">${num}</span>` : num
+      ).join(", ");
+
+
+      document.getElementById('result').innerHTML = 
+        `<strong>Tanggal:</strong> ${inputDate}<br>
+        <strong>Seed:</strong> ${seedInput}<br>
+        <strong>Angka Dominan Berdasarkan Satuan:</strong> ${sortedUnits.join(', ')}<br>
+        <strong>Hasil Acak:</strong><br>${resultHTML}`;
+    }
+
+    // Fungsi untuk Generator Bilangan Bulat Acak
+    // Fungsi untuk menghasilkan angka acak bulat dalam rentang tertentu
+    function generateRandomInteger(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Fungsi untuk menemukan 4 angka dominan
+    function findDominantNumbers(numbers) {
+      const frequency = {};
+      numbers.forEach(num => {
+        frequency[num] = (frequency[num] || 0) + 1;
+      });
+      const sortedNumbers = Object.entries(frequency)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4)
+        .map(entry => entry[0]);
+      return sortedNumbers;
+    }
+
+    // Event listener untuk tombol
+    document.getElementById("generateButton").addEventListener("click", function() {
+      const jumlah = parseInt(document.getElementById("jumlahInput").value);
+      const rentang = document.getElementById("rentangSelect").value;
+      let hasil = [];
+
+      // Tentukan rentang berdasarkan pilihan
+      let min, max;
+      if (rentang === "10-99") {
+        min = 10;
+        max = 99;
+      } else if (rentang === "100-999") {
+        min = 100;
+        max = 999;
+      } else if (rentang === "1000-9999") {
+        min = 1000;
+        max = 9999;
+      }
+
+      // Hasilkan angka acak sesuai jumlah yang diminta
+      for (let i = 0; i < jumlah; i++) {
+        hasil.push(generateRandomInteger(min, max));
+      }
+
+      // Tampilkan hasil
+      const dominantNumbers = findDominantNumbers(hasil);
+      const resultDiv = document.getElementById("hasil");
+      resultDiv.innerHTML = "Angka acak yang dihasilkan: " + hasil.join(", ") + "<br><br>" +
+                            "4 Angka Dominan: <span class='dominant'>" + dominantNumbers.join(", ") + "</span>";
+    });
+
+    // Fungsi untuk Pengacak Nomor 4D
+    let isAcak = false; // Menandakan apakah tombol sudah ditekan
+
+    function acakNomor() {
+      if (isAcak) {
+        alert("Cukup sekali bro!!.");
+        return;
+      }
+
+      const seed = document.getElementById('seed2').value;
+      if (!seed) {
+        alert("Silakan masukkan seed!");
+        return;
+      }
+
+      let randomNumbers = [];
+      let dominantDigitCount = Array(10).fill(0);
+      let dominantDigits = [];
+
+      // Mengacak 53 angka 4 digit
+      for (let i = 0; i < 53; i++) {
+        let fourDigitNumber = '';
+        for (let j = 0; j < 4; j++) {
+          let randomNumber = (Math.floor(Math.random() * 10) + parseInt(seed.charAt(j % seed.length))) % 10;
+          fourDigitNumber += randomNumber;
+          dominantDigitCount[randomNumber]++;
+        }
+        randomNumbers.push(fourDigitNumber);
+      }
+
+      // Menentukan angka dominan (6 angka yang paling sering muncul)
+      for (let i = 0; i < 6; i++) {
+        const maxCount = Math.max(...dominantDigitCount);
+        const index = dominantDigitCount.indexOf(maxCount);
+        if (maxCount > 0) {
+          dominantDigits.push({ digit: index, count: maxCount });
+          dominantDigitCount[index] = -1; // Tandai agar tidak dihitung lagi
+        }
+      }
+
+      const dominantResults = dominantDigits.map(item => 
+        `<span class="number">Angka ${item.digit}: ${item.count}</span>`
+      ).join(', ');
+
+      const resultText = `Hasil acak: ${randomNumbers.join(', ')} | <span class="dominant">Angka dominan: ${dominantResults}</span>`;
+      document.getElementById('result3').innerHTML = resultText;
+
+      isAcak = true; // Menandakan bahwa tombol sudah ditekan
+    }
+
+    // Fungsi untuk Prediksi Nomor Berdasarkan Hari
+    let histori = [];
+
+    const warnaHari = {
+      Senin: "#e0f7fa",
+      Selasa: "#e8f5e9",
+      Rabu: "#fff3e0",
+      Kamis: "#f3e5f5",
+      Jumat: "#fbe9e7",
+      Sabtu: "#ede7f6",
+      Minggu: "#ffebee"
+    };
+
+    // Muat histori dari localStorage saat halaman dimuat
+    window.onload = function () {
+      const saved = localStorage.getItem("histori");
+      if (saved) {
+        histori = JSON.parse(saved);
+        updateHistoriDisplay();
+      }
+    };
+
+    function updateHari() {
+      const tgl = document.getElementById('tanggal').value;
+      if (tgl) {
+        const date = new Date(tgl);
+        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const hari = days[date.getDay()];
+        document.getElementById('hari').value = hari;
+      }
+    }
+
+    function simpanHistori() {
+      localStorage.setItem("histori", JSON.stringify(histori));
+    }
+
+    function tambahHistori() {
+      const tgl = document.getElementById('tanggal').value;
+      const hari = document.getElementById('hari').value;
+      const periode = document.getElementById('periode').value;
+      const angka = document.getElementById('angka').value;
+
+      if (!tgl || !hari || !periode || !angka) {
+        alert('Mohon lengkapi semua kolom input!');
+        return;
+      }
+
+      if (!/^\d{4}$/.test(angka)) {
+        alert('Angka keluaran harus 4 digit!');
+        return;
+      }
+
+      histori.push({ tgl, hari, periode, angka });
+      histori.sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
+      simpanHistori();
+      updateHistoriDisplay();
+    }
+
+    function tambahHistoriMassal() {
+      const text = document.getElementById('bulkInput').value.trim();
+      if (!text) {
+        alert('Masukkan data terlebih dahulu.');
+        return;
+      }
+
+      const lines = text.split('\n');
+      lines.forEach(line => {
+        const parts = line.split(/[\t,]+/);
+        if (parts.length >= 4) {
+          const datetime = parts[0].split(' ')[0]; // Ambil tanggal
+          const [day, month, year] = datetime.split('-');
+          const tgl = `${year}-${month}-${day}`;
+          const hari = parts[1].trim();
+          const periode = parts[2].trim();
+          const angka = parts[3].trim();
+
+          if (/^\d{4}$/.test(angka)) {
+            histori.push({ tgl, hari, periode, angka });
+          }
+        }
+      });
+
+      histori.sort((a, b) => new Date(b.tgl) - new Date(a.tgl));
+      simpanHistori();
+      updateHistoriDisplay();
+      document.getElementById('bulkInput').value = '';
+    }
+
+    function updateHistoriDisplay() {
+      const list = document.getElementById('daftarHistori');
+      if (histori.length === 0) {
+        list.innerHTML = "<div class='text-gray-400 italic'>Belum ada histori.</div>";
+        document.getElementById('historiCount').textContent = '0 item';
+        return;
+      }
+
+      list.innerHTML = histori.map((h, i) => {
+        const bgColor = warnaHari[h.hari] || "#ffffff";
+        return `<div class='histori-item' style="background:${bgColor};">
+          ${i+1}. ${h.tgl} | ${h.hari} | ${h.periode} | ${h.angka}
+        </div>`;
+      }).join('');
+
+      document.getElementById('historiCount').textContent = `${histori.length} item`;
+    }
+
+    function hapusHistori() {
+      if (confirm('Apakah Anda yakin ingin menghapus semua histori?')) {
+        histori = [];
+        localStorage.removeItem("histori");
+        updateHistoriDisplay();
+        document.getElementById('hasil').innerHTML = '<div class="text-sm">Hasil analisa akan muncul di sini setelah Anda mengklik tombol Analisa Hari Berikutnya.</div>';
+      }
+    }
+
+    function analisaHariBerikutnya() {
+      if (histori.length < 2) {
+        alert('Tambahkan minimal 2 data histori terlebih dahulu.');
+        return;
+      }
+
+      const hariMap = {};
+      histori.forEach(item => {
+        if (!hariMap[item.hari]) hariMap[item.hari] = [];
+        hariMap[item.hari].push(item.angka);
+      });
+
+      const urutanHari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+      const hariTerakhir = histori[0].hari;
+      const indexHari = urutanHari.indexOf(hariTerakhir);
+      const nextHari = urutanHari[(indexHari + 1) % 7];
+      const dataset = hariMap[nextHari] || [];
+
+      let freq = Array(10).fill(0);
+
+      // --- Generate prediksi berdasarkan frekuensi dataset hari berikutnya
+      const prediksi = [];
+      for (let i = 0; i < 15; i++) {
+        const digit = freq
+          .map((v, idx) => ({ val: v + (Math.random() * 10), digit: idx }))
+          .sort((a, b) => b.val - a.val)
+          .slice(0, 4)
+          .map(o => o.digit)
+          .join('');
+        prediksi.push(digit);
+      }
+
+      // --- ANALISA 2D
+      const twoDigitFreq = {};
+
+      prediksi.forEach(angka4d => {
+        for (let i = 0; i < angka4d.length - 1; i++) {
+          const twoDigit = angka4d.substring(i, i+2);
+          if (!twoDigitFreq[twoDigit]) twoDigitFreq[twoDigit] = 0;
+          twoDigitFreq[twoDigit]++;
+        }
+      });
+
+      const angka2D = Object.entries(twoDigitFreq)
+                            .sort((a, b) => b[1] - a[1])
+                            .slice(0, 5)
+                            .map(item => item[0])
+                            .join(', ');
+
+      // --- ANALISA GANJIL, GENAP, TINGGI, RENDAH
+      let freqPrediksi = Array(15).fill(0);
+      prediksi.forEach(angka4d => {
+        angka4d.split('').forEach(d => {
+          freqPrediksi[parseInt(d)]++;
+        });
+      });
+
+      const angkaGanjil = freqPrediksi.filter((_, i) => i % 2 === 1)
+                                    .map((jumlah, i) => ({ digit: i*2+1, jumlah }))
+                                    .sort((a, b) => b.jumlah - a.jumlah)
+                                    .slice(0, 3)
+                                    .map(obj => obj.digit)
+                                    .join(', ');
+
+      const angkaGenap = freqPrediksi.filter((_, i) => i % 2 === 0)
+                                   .map((jumlah, i) => ({ digit: i*2, jumlah }))
+                                   .sort((a, b) => b.jumlah - a.jumlah)
+                                   .slice(0, 3)
+                                   .map(obj => obj.digit)
+                                   .join(', ');
+
+      const angkaTinggi = freqPrediksi.slice(5,10)
+                                    .map((jumlah, i) => ({ digit: i+5, jumlah }))
+                                    .sort((a, b) => b.jumlah - a.jumlah)
+                                    .slice(0, 3)
+                                    .map(obj => obj.digit)
+                                    .join(', ');
+
+      const angkaRendah = freqPrediksi.slice(0,5)
+                                    .map((jumlah, i) => ({ digit: i, jumlah }))
+                                    .sort((a, b) => b.jumlah - a.jumlah)
+                                    .slice(0, 3)
+                                    .map(obj => obj.digit)
+                                    .join(', ');
+
+      document.getElementById('hasil44').innerHTML = `
+        <b>Prediksi untuk hari ${nextHari}:</b><br>
+        <b>4D</b>: ${prediksi.join(', ')}<br><br>
+        <b>Angka 2D Dominan</b>: ${angka2D}<br>
+        <b>Ganjil Dominan</b>: ${angkaGanjil}<br>
+        <b>Genap Dominan</b>: ${angkaGenap}<br>
+        <b>Tinggi Dominan (5-9)</b>: ${angkaTinggi}<br>
+        <b>Rendah Dominan (0-4)</b>: ${angkaRendah}
+      `;
+    }
+  </script>
+</body>
+</html>
